@@ -15,10 +15,11 @@ from colorsys import hsv_to_rgb
 
 my_path = '/Users/david/Dropbox/Computing/Linux/Python/fitzgap_data/'
 
-data_file = 'fgap_data_financials.csv'
-
+#  data_file = 'fgap_data_financials.csv'
+data_file = 'fitzGAP_Statements.csv'
 data = pd.read_csv(my_path + data_file)
 data.columns = ['Date','Month','Year','Fiscal year end','Description',
-            'Category','Money in','Money Out','Balance','Month Name','Rentee','Subcat']  # Converts Column headers to consistent labels
+            'Category','Money in','Money Out','Balance','Month Name','Rentee','Subcat','blank1','blank2','blank3']  # Converts Column headers to consistent labels
 
- data = data[data['Date'].notna()]  # Drop rows without Date           
+data = data[data['Date'].notna()]  # Drop rows without Date   
+data = data.drop(['blank1','blank2','blank3'], axis=1)        
