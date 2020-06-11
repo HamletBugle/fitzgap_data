@@ -23,3 +23,66 @@ data.columns = ['Date','Month','Year','Fiscal year end','Description',
 
 data = data[data['Date'].notna()]  # Drop rows without Date   
 data = data.drop(['blank1','blank2','blank3'], axis=1)        
+
+data['Date'] = pd.to_datetime(data['Date'], dayfirst=True, yearfirst=False)
+data.sort_values(by=['Date'], inplace=True, ascending=True)
+
+# clean money formats
+data['Money in'] = data['Money in'].astype(str)
+data['Money Out'] = data['Money Out'].astype(str)
+
+
+data['Money in'] = data['Money in'].str.replace('£','')
+data['Money Out'] = data['Money Out'].str.replace('£','')
+
+data['Money in'] = data['Money in'].str.replace('nan','')
+data['Money Out'] = data['Money Out'].str.replace('nan','')
+
+data['Money in'] = data['Money in'].str.replace(',','')
+data['Money Out'] = data['Money Out'].str.replace(',','')
+
+data['Money in'] = data['Money in'].str.strip()
+data['Money Out'] = data['Money Out'].str.strip()
+
+print(data.head())
+
+data['Money in'].fillna("", inplace=True)
+data['Money Out'].fillna("", inplace=True)
+print(data.head())
+
+data['Money in'] = pd.to_numeric(data['Money in'])
+data['Money Out'] = pd.to_numeric(data['Money Out'])
+
+
+data = data.set_index('Date')
+data.sort_values(by = ['Date'], inplace=True, ascending=True)
+
+data['Money in'].fillna("", inplace=True)
+data['Money Out'].fillna("", inplace=True)
+print(data.head())
+
+
+
+
+myfig = plt.figure()  # or do we need this?
+
+myspec = gridspec.GridSpec(nrows=3, ncols=3, figure=myfig)
+fig_size = plt.rcParams['figure.figsize']
+fig_size[0] = 24
+fig_size[1] = 14
+plt.rcParams['figure.figsize'] = fig_size
+
+
+# Plot with various data
+plt.figure()
+
+plt.subplot(myspec[:2, 0])
+ax = plt.gca()
+plt.yscale('linear')
+ax.xaxis.set_label_text('')
+ax.xaxis.label.set_visible(False)
+#ax.xaxis.set_major_formatter(date_form)
+ax.xaxis.set_major_locator(locator)
+ax.xaxis.set_major_formatter(formatter)
+
+plt.title('xxxx ')
