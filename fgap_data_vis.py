@@ -58,7 +58,6 @@ data['Money Out'] = data['Money Out'].str.strip()
 data['Money in'].fillna(0, inplace=True)
 data['Money Out'].fillna(0, inplace=True)
 
-
 data['Money in'] = pd.to_numeric(data['Money in'])
 data['Money Out'] = pd.to_numeric(data['Money Out'])
 #  print(data['Money in'].head(20))
@@ -85,40 +84,14 @@ fig = plt.figure(figsize = (24,10))
 ax1 = fig.add_subplot(211)
 ax2 = fig.add_subplot(212)
 
+ax1.set_title('Income / Expenditure by year and month')
+ax2.set_title('Surplus Year - Month ')
+
 data_grouped = data.groupby('month_year').agg({'Money in':'sum','Money Out':'sum'}).reset_index()
 data_grouped.plot.bar(x='month_year', ax=ax1, label='Income')
-'''
-plt.figure()
-ax = plt.gca()
-'''
 
-#  plt.subplot(myspec[0:1, 0:2])
-#   ax = plt.gca()
-#  plt.yscale('linear')
-#  ax.xaxis.set_label_text('')
-#  ax.xaxis.label.set_visible(False)
-ax1.set_title('Income / Expenditure by year and month')
-
-
-#data_grouped = data.groupby('month_year')['Money_in'].sum()
-
-#axs[0,0].plot.bar.d(x='month_year')
-#data_grouped.plot.bar(x='month_year', y='Money_in',
-#                   color='blue',  ax=ax, label='Income')
-
-
-
-
-#plt.yscale('linear')
-#  ax2.xaxis.set_label_text('')
-#  ax2.xaxis.label.set_visible(False)
-ax2.set_title('Surplus Year - Month ')
 data_surplus = data.groupby('month_year')['Surplus'].sum()
-
 data_surplus.plot.bar(x='month_year',ax=ax2)
-#data_grouped.plot.bar(x='month_year', y='Money_in',
-#                   color='blue',  ax=ax, label='Income')
-
 
 plt.tight_layout()
 plt.show()
