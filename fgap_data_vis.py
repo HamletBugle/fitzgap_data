@@ -70,7 +70,7 @@ data = data.set_index('Date')
 data.sort_values(by = ['Date'], inplace=True, ascending=True)
 
 
-
+'''
 myfig = plt.figure()  # or do we need this?
 
 myspec = gridspec.GridSpec(nrows=3, ncols=2, figure=myfig)
@@ -78,36 +78,44 @@ fig_size = plt.rcParams['figure.figsize']
 fig_size[0] = 24
 fig_size[1] = 14
 plt.rcParams['figure.figsize'] = fig_size
+'''
 
+fig = plt.figure(figsize = (24,10))
 
+ax1 = fig.add_subplot(211)
+ax2 = fig.add_subplot(212)
+
+data_grouped = data.groupby('month_year').agg({'Money in':'sum','Money Out':'sum'}).reset_index()
+data_grouped.plot.bar(x='month_year', ax=ax1, label='Income')
+'''
 plt.figure()
 ax = plt.gca()
+'''
 
-plt.subplot(myspec[0, :2])
-ax = plt.gca()
-plt.yscale('linear')
-ax.xaxis.set_label_text('')
-ax.xaxis.label.set_visible(False)
-plt.title('Surplus Year - Month ')
+#  plt.subplot(myspec[0:1, 0:2])
+#   ax = plt.gca()
+#  plt.yscale('linear')
+#  ax.xaxis.set_label_text('')
+#  ax.xaxis.label.set_visible(False)
+ax1.set_title('Income / Expenditure by year and month')
 
 
 #data_grouped = data.groupby('month_year')['Money_in'].sum()
-data_grouped = data.groupby('month_year').agg({'Money in':'sum','Money Out':'sum'}).reset_index()
-data_grouped.plot.bar(x='month_year')
+
+#axs[0,0].plot.bar.d(x='month_year')
 #data_grouped.plot.bar(x='month_year', y='Money_in',
 #                   color='blue',  ax=ax, label='Income')
 
 
 
-plt.subplot(myspec[1, 0])
-ax = plt.gca()
+
 #plt.yscale('linear')
-ax.xaxis.set_label_text('')
-ax.xaxis.label.set_visible(False)
-plt.title('Surplus Year - Month ')
+#  ax2.xaxis.set_label_text('')
+#  ax2.xaxis.label.set_visible(False)
+ax2.set_title('Surplus Year - Month ')
 data_surplus = data.groupby('month_year')['Surplus'].sum()
 
-data_surplus.plot.bar(x='month_year')
+data_surplus.plot.bar(x='month_year',ax=ax2)
 #data_grouped.plot.bar(x='month_year', y='Money_in',
 #                   color='blue',  ax=ax, label='Income')
 
