@@ -80,9 +80,12 @@ plt.rcParams['figure.figsize'] = fig_size
 '''
 
 fig = plt.figure(figsize = (24,10))
+grid = gridspec.GridSpec(nrows=3, ncols=2, figure=fig)
 
-ax1 = fig.add_subplot(211)
-ax2 = fig.add_subplot(212)
+ax1 = fig.add_subplot(grid[0, :2])
+ax2 = fig.add_subplot(grid[1, 0])
+ax3 = fig.add_subplot(grid[1, 1])
+ax4 = fig.add_subplot(grid[2, :2])
 
 ax1.set_title('Income / Expenditure by year and month')
 ax2.set_title('Surplus Year - Month ')
