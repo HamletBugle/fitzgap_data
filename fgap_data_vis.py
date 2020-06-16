@@ -83,6 +83,9 @@ data_2 = data.loc['2018'].groupby('Month')['Money in'].sum()
 data_1 = data.loc['2019'].groupby('Month')['Money in'].sum()
 data_0 = data.loc['2020'].groupby('Month')['Money in'].sum()
 data.reset_index(inplace=True)
+
+data_year_grp = data.groupby(['Month','Year'])['Money in'].sum().unstack()
+
 # data.set_index('Date', inplace=True)
 dt = pd.to_datetime('today')
 dt = dt - timedelta(days=365)
@@ -139,6 +142,13 @@ ax3.legend(bbox_to_anchor=(0., 1.02, 1., .102), loc='lower left',
 data_lastYr_inc_grp.plot.bar(x='month_year', ax=ax4, stacked=True)
 ax4.legend(bbox_to_anchor=(0., 1.02, 1., .102), loc='lower left',
            ncol=2, mode="expand", borderaxespad=0. )
+
+# plot 5
+#data_year_grp.reset_index(inplace=True)
+#data_year_grp.set_index('Month', inplace=True)
+data_year_grp.plot.bar(x='Month', ax=ax5, stacked=True)
+ax5.legend(bbox_to_anchor=(0., 1.02, 1., .102), loc='lower left',
+           ncol=6, mode="expand", borderaxespad=0. )
 
 plt.tight_layout()
 plt.show()
