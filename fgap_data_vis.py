@@ -69,15 +69,7 @@ data = data.set_index('Date')
 data.sort_values(by = ['Date'], inplace=True, ascending=True)
 
 
-'''
-myfig = plt.figure()  # or do we need this?
 
-myspec = gridspec.GridSpec(nrows=3, ncols=2, figure=myfig)
-fig_size = plt.rcParams['figure.figsize']
-fig_size[0] = 24
-fig_size[1] = 14
-plt.rcParams['figure.figsize'] = fig_size
-'''
 data['Outflow'] = - data['Money Out']
 data_surplus = data.groupby('month_year')['Surplus'].sum()
 data_inc = data.groupby('month_year')['Money in'].sum()
@@ -103,19 +95,25 @@ data_lastYr_rent.reset_index(inplace=True)
 data_lastYr_exp = data_lastYr.groupby(['month_year','Category'])['Money Out'].sum().unstack()
 data_lastYr_exp.reset_index(inplace=True)
 
+data_lastYr_inc = data_lastYr[(data_lastYr.Category== 'Members fees') | (data_lastYr.Category== 'Room letting')]
+data_lastYr_inc_grp = data_lastYr_inc.groupby(['month_year','Category'])['Money in'].sum().unstack()
+data_lastYr_inc_grp.reset_index(inplace=True)
+
 fig = plt.figure(figsize = (18,12))
 grid = gridspec.GridSpec(nrows=3, ncols=2, figure=fig)
 
 ax1 = fig.add_subplot(grid[0, :2])
 ax2 = fig.add_subplot(grid[1, 0])
 ax3 = fig.add_subplot(grid[1, 1])
-ax4 = fig.add_subplot(grid[2, :2])
+ax4 = fig.add_subplot(grid[2, 0])
+ax5 = fig.add_subplot(grid[2, 1])
 
 ax1.set_title('Income / Expenditure (Surplus) by year and month')
 #  ax2.set_title('Rental Income over last year')
 #  ax3.set_title('Expenditure categories over last year')
 ax2.text(0.1,0.9,'Rental Income over last year', transform=ax2.transAxes)
 ax3.text(0.1,0.9,'Expenditure categories over last year', transform=ax3.transAxes)
+ax4.text(0.1,0.9,'Income members v renters over last year', transform=ax4.transAxes)
 
 # plot 1
 data_inc.plot.bar(x='month_year',ax=ax1, color='blue', alpha=0.25, label='Income')
@@ -136,7 +134,11 @@ data_lastYr_exp.plot.bar(x='month_year', ax=ax3, stacked=True)
 ax3.legend(bbox_to_anchor=(0., 1.02, 1., .102), loc='lower left',
            ncol=4, mode="expand", borderaxespad=0. )
 
+# plot 4
 
+data_lastYr_inc_grp.plot.bar(x='month_year', ax=ax4, stacked=True)
+ax4.legend(bbox_to_anchor=(0., 1.02, 1., .102), loc='lower left',
+           ncol=2, mode="expand", borderaxespad=0. )
 
 plt.tight_layout()
 plt.show()
