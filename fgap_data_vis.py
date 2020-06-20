@@ -63,6 +63,7 @@ data['Money Out'] = pd.to_numeric(data['Money Out'])
 #  print(data['Money in'].head(20))
 
 data['Surplus'] = data['Money in'] - data['Money Out']
+
 #  print(data['Surplus'].head(20))
 
 data = data.set_index('Date')
@@ -71,7 +72,17 @@ data.sort_values(by = ['Date'], inplace=True, ascending=True)
 
 
 data['Outflow'] = - data['Money Out']
+
 data_surplus = data.groupby('month_year')['Surplus'].sum()
+data_surplus = data_surplus.to_frame().reset_index()
+#  data_surplus.to_csv(my_path + 'data_surplus')
+#  colormat = np.where(data_surplus['Surplus'] > 0, 'b','r')
+data_surplus.insert(0,'color', 'r')
+
+mask = data_surplus['Surplus'] > 0
+data_surplus['color'][mask] = 'b'
+data_surplus.to_csv(my_path + 'data_surplus.csv')
+
 data_inc = data.groupby('month_year')['Money in'].sum()
 data_exp = data.groupby('month_year')['Outflow'].sum()
 data.reset_index(inplace=True)
@@ -89,11 +100,16 @@ data_year_grp = data.groupby(['Month','Year'])['Money in'].sum().unstack()
 # data.set_index('Date', inplace=True)
 dt = pd.to_datetime('today')
 dt = dt - timedelta(days=365)
+dt = dt.replace(day=1)
 data_lastYr = data[data['Date'] > dt]
 data_lastYr.to_csv(my_path+'saved_data.csv')
 data_lastYr.set_index('month_year', inplace=True)
 data_lastYr_rent = data_lastYr.groupby(['month_year','Rentee'])['Money in'].sum().unstack()
 data_lastYr_rent.reset_index(inplace=True)
+
+data_lastYr_rentee_v_fitzCAF = data_lastYr[(data_lastYr['Subcat']=='Renter') | (data_lastYr['Subcat']=='FitzCAF')]
+data_lastYr_rentee_v_fitzCAF = data_lastYr_rentee_v_fitzCAF.groupby(['month_year','Subcat'])['Money in'].sum().unstack()
+data_lastYr_rentee_v_fitzCAF.reset_index(inplace=True)
 
 data_lastYr_exp = data_lastYr.groupby(['month_year','Category'])['Money Out'].sum().unstack()
 data_lastYr_exp.reset_index(inplace=True)
@@ -117,11 +133,13 @@ ax1.set_title('Income / Expenditure (Surplus) by year and month')
 ax2.text(0.1,0.9,'Rental Income over last year', transform=ax2.transAxes)
 ax3.text(0.1,0.9,'Expenditure categories over last year', transform=ax3.transAxes)
 ax4.text(0.1,0.9,'Income members v renters over last year', transform=ax4.transAxes)
+ax5.text(0.1,0.9,'Income FitzCAF v renters over last year', transform=ax5.transAxes)
 
 # plot 1
 data_inc.plot.bar(x='month_year',ax=ax1, color='blue', alpha=0.25, label='Income')
 data_exp.plot.bar(x='month_year',ax=ax1, color='r', alpha=0.25, label='Expenditure')
-data_surplus.plot.bar(x='month_year',ax=ax1, color='green', label='Surplus')
+color = data_surplus['color'].to_numpy()
+data_surplus.plot.bar(x='month_year',y='Surplus', ax=ax1, color=color, label='Surplus')
 ax1.legend()
 
 
@@ -139,16 +157,14 @@ ax3.legend(bbox_to_anchor=(0., 1.02, 1., .102), loc='lower left',
 
 # plot 4
 
-data_lastYr_inc_grp.plot.bar(x='month_year', ax=ax4, stacked=True)
+data_lastYr_inc_grp.plot.bar(x='month_year', ax=ax4, stacked=False)
 ax4.legend(bbox_to_anchor=(0., 1.02, 1., .102), loc='lower left',
            ncol=2, mode="expand", borderaxespad=0. )
 
 # plot 5
-#data_year_grp.reset_index(inplace=True)
-#data_year_grp.set_index('Month', inplace=True)
-data_year_grp.plot.bar(x='Month', ax=ax5, stacked=True)
+data_lastYr_rentee_v_fitzCAF.plot.bar(x='month_year', ax=ax5, stacked=False)
 ax5.legend(bbox_to_anchor=(0., 1.02, 1., .102), loc='lower left',
-           ncol=6, mode="expand", borderaxespad=0. )
+           ncol=5, mode="expand", borderaxespad=0. )
 
 plt.tight_layout()
 plt.show()
