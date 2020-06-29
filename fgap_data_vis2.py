@@ -28,6 +28,9 @@ data['Date'] = pd.to_datetime(data['Date'], dayfirst=True, yearfirst=False)
 data['month_year'] = pd.to_datetime(data['Date']).dt.to_period('M')
 data.sort_values(by=['Date'], inplace=True, ascending=True)
 
+dt_start = pd.to_datetime('2010-12-31', yearfirst=True)
+data = data[data['Date'] > dt_start]
+
 data.reset_index(inplace=True)
 
 # clean money formats
@@ -73,7 +76,8 @@ data.sort_values(by = ['Date'], inplace=True, ascending=True)
 
 data['Outflow'] = - data['Money Out']
 
-data_surplus = data.groupby('month_year')['Surplus'].sum()
+data_surplus = data.copy()
+data_surplus = data_surplus.groupby('month_year')['Surplus'].sum()
 data_surplus = data_surplus.to_frame().reset_index()
 data_surplus.insert(0,'color', 'r')
 mask = data_surplus['Surplus'] > 0
@@ -123,16 +127,16 @@ fig1 = plt.figure(figsize = (18,12))
 grid1 = gridspec.GridSpec(nrows=2, ncols=1, figure=fig1)  #(nrows=3, ncols=2, figure=fig1)
 
 fig2 = plt.figure(figsize = (18,12))
-grid2 = gridspec.GridSpec(nrows=3, ncols=1, figure=fig2)
+grid2 = gridspec.GridSpec(nrows=2, ncols=1, figure=fig2)
 
 fig3 = plt.figure(figsize = (18,12))
-grid3 = gridspec.GridSpec(nrows=3, ncols=1, figure=fig3)
+grid3 = gridspec.GridSpec(nrows=2, ncols=1, figure=fig3)
 
 ax1 = fig1.add_subplot(grid1[0, 0])
 ax2 = fig2.add_subplot(grid2[0, 0])
-ax3 = fig2.add_subplot(grid2[2, 0])
+ax3 = fig2.add_subplot(grid2[1, 0])
 ax4 = fig3.add_subplot(grid3[0, 0])
-ax5 = fig3.add_subplot(grid3[2, 0])
+ax5 = fig3.add_subplot(grid3[1, 0])
 
 ax11 = fig1.add_subplot(grid1[1, 0])
 
@@ -171,6 +175,7 @@ ax2.legend(bbox_to_anchor=(0., 1.02, 1., .102), loc='lower left',
            ncol=5, mode="expand", borderaxespad=0. )  #  ncol=3, fancybox=True, shadow=True
 ax2.set_xlabel('Rental Income over last year by month', fontsize='large', fontweight='bold')
 
+
 # plot 3
 
 data_lastYr_exp.plot.bar(x='month_year', ax=ax3, stacked=True)
@@ -178,19 +183,21 @@ ax3.legend(bbox_to_anchor=(0., 1.02, 1., .102), loc='lower left',
            ncol=4, mode="expand", borderaxespad=0. )
 ax3.set_xlabel('Expenditure categories over last year', fontsize='large', fontweight='bold')
 
+grid2.tight_layout(fig2)
 # plot 4
 
 data_lastYr_inc_grp.plot.bar(x='month_year', ax=ax4, stacked=False)
 ax4.legend(bbox_to_anchor=(0., 1.02, 1., .102), loc='lower left',
            ncol=2, mode="expand", borderaxespad=0. )
-ax4.set_xlabel('Income members v renters over last year', fontsize='large', fontweight='bold')
+ax4.set_xlabel('Income from Members v all Renters over last year', fontsize='large', fontweight='bold')
 
 # plot 5
 data_lastYr_rentee_v_fitzCAF.plot.bar(x='month_year', ax=ax5, stacked=False)
 ax5.legend(bbox_to_anchor=(0., 1.02, 1., .102), loc='lower left',
            ncol=5, mode="expand", borderaxespad=0. )
-ax5.set_xlabel('Income FitzCAF v renters over last year', fontsize='large', fontweight='bold')
+ax5.set_xlabel('Income from FitzCAF v Renters over last year', fontsize='large', fontweight='bold')
 
+grid3.tight_layout(fig3)
 
-plt.tight_layout()
+#  plt.tight_layout()
 plt.show()
