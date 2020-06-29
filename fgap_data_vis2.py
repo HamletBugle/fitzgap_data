@@ -92,6 +92,10 @@ data_1 = data.loc['2019'].groupby('Month')['Money in'].sum()
 data_0 = data.loc['2020'].groupby('Month')['Money in'].sum()
 data.reset_index(inplace=True)
 
+data_rentee_v_fitzCAF = data[(data['Subcat']=='Renter') | (data['Subcat']=='FitzCAF')]
+data_rentee_v_fitzCAF = data_rentee_v_fitzCAF.groupby(['month_year','Subcat'])['Money in'].sum().unstack()
+data_rentee_v_fitzCAF.reset_index(inplace=True)
+
 data_year_grp = data.groupby(['Month','Year'])['Money in'].sum().unstack()
 
 # data.set_index('Date', inplace=True)
@@ -116,21 +120,24 @@ data_lastYr_inc_grp = data_lastYr_inc.groupby(['month_year','Category'])['Money 
 data_lastYr_inc_grp.reset_index(inplace=True)
 
 fig1 = plt.figure(figsize = (18,12))
-grid = gridspec.GridSpec(nrows=3, ncols=2, figure=fig1)
+grid1 = gridspec.GridSpec(nrows=2, ncols=1, figure=fig1)  #(nrows=3, ncols=2, figure=fig1)
 
 fig2 = plt.figure(figsize = (18,12))
-grid = gridspec.GridSpec(nrows=3, ncols=1, figure=fig2)
+grid2 = gridspec.GridSpec(nrows=3, ncols=1, figure=fig2)
 
 fig3 = plt.figure(figsize = (18,12))
-grid = gridspec.GridSpec(nrows=3, ncols=1, figure=fig3)
+grid3 = gridspec.GridSpec(nrows=3, ncols=1, figure=fig3)
 
-ax1 = fig1.add_subplot(grid[0, :2])
-ax2 = fig2.add_subplot(grid[0, 0])
-ax3 = fig2.add_subplot(grid[2, 0])
-ax4 = fig3.add_subplot(grid[0, 0])
-ax5 = fig3.add_subplot(grid[2, 0])
+ax1 = fig1.add_subplot(grid1[0, 0])
+ax2 = fig2.add_subplot(grid2[0, 0])
+ax3 = fig2.add_subplot(grid2[2, 0])
+ax4 = fig3.add_subplot(grid3[0, 0])
+ax5 = fig3.add_subplot(grid3[2, 0])
+
+ax11 = fig1.add_subplot(grid1[1, 0])
 
 ax1.set_title('Income / Expenditure (Surplus) by year and month')
+ax11.set_title('Income from room rental by year and month')
 #  ax2.set_title('Rental Income over last year')
 #  ax3.set_title('Expenditure categories over last year')
 #  ax4.set_title('Income members v renters over last year')
@@ -152,8 +159,11 @@ data_exp.plot.bar(x='month_year',ax=ax1, color='r', alpha=0.25, label='Expenditu
 color = data_surplus['color'].to_numpy()
 data_surplus.plot.bar(x='month_year',y='Surplus', ax=ax1, color=color, label='Surplus')
 ax1.legend()
+data_rentee_v_fitzCAF.plot.bar(x='month_year', ax=ax11, stacked=True)
+ax11.set_ylim([0, 10000])
+#  ax11.set_xlim(left=pd.to_datetime('2010-08-01'))
 
-
+grid1.tight_layout(fig1)
 #plot 2
 
 data_lastYr_rent.plot.bar(x='month_year', ax=ax2, stacked=True)
