@@ -12,6 +12,7 @@ from matplotlib.dates import DateFormatter
 from datetime import datetime, date, timedelta
 from dateutil.relativedelta import relativedelta
 from colorsys import hsv_to_rgb
+from cycler import cycler
 
 my_path = '/Users/david/Dropbox/Computing/Linux/Python/fitzgap_data/'
 
@@ -177,14 +178,15 @@ grid2.tight_layout(fig2)
 
 # plot 4
 
-data_lastYr_inc_grp.plot.bar(x='month_year', ax=ax4, stacked=True, aplha=0.75)
+data_lastYr_inc_grp.plot.bar(x='month_year', ax=ax4, stacked=True)
 ax4.legend(bbox_to_anchor=(0., 1.02, 1., .102), loc='lower left',
            ncol=2, mode="expand", borderaxespad=0. )
 ax4.set_xlabel('Income from Members v all Renters over last year', fontsize='large', fontweight='bold')
 
 
 # plot 5
-data_lastYr_rentee_v_fitzCAF.plot.bar(x='month_year', ax=ax5, stacked=True, aplha=0.75)
+plt.rc('axes', prop_cycle=(cycler('color', ['r', 'g', 'b'])))
+data_lastYr_rentee_v_fitzCAF.plot.bar(x='month_year', ax=ax5, stacked=True)
 ax5.legend(bbox_to_anchor=(0., 1.02, 1., .102), loc='lower left',
            ncol=5, mode="expand", borderaxespad=0. )
 ax5.set_xlabel('Income from FitzCAF v Renters over last year', fontsize='large', fontweight='bold')
