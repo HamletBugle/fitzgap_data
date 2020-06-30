@@ -142,20 +142,7 @@ ax11 = fig1.add_subplot(grid1[1, 0])
 
 ax1.set_title('Income / Expenditure (Surplus) by year and month')
 ax11.set_title('Income from room rental by year and month')
-#  ax2.set_title('Rental Income over last year')
-#  ax3.set_title('Expenditure categories over last year')
-#  ax4.set_title('Income members v renters over last year')
-#  ax5.set_title('Income FitzCAF v renters over last year')
 
-
-
-
-
-
-#  ax2.text(0.1,0.9,'Rental Income over last year', transform=ax2.transAxes)
-#  ax3.text(0.1,0.9,'Expenditure categories over last year', transform=ax3.transAxes)
-#  ax4.text(0.1,0.9,'Income members v renters over last year', transform=ax4.transAxes)
-#  ax5.text(0.1,0.9,'Income FitzCAF v renters over last year', transform=ax5.transAxes)
 
 # plot 1
 data_inc.plot.bar(x='month_year',ax=ax1, color='blue', alpha=0.25, label='Income')
@@ -168,9 +155,11 @@ ax11.set_ylim([0, 10000])
 #  ax11.set_xlim(left=pd.to_datetime('2010-08-01'))
 
 grid1.tight_layout(fig1)
+
+
 #plot 2
 
-data_lastYr_rent.plot.bar(x='month_year', ax=ax2, stacked=True)
+data_lastYr_rent.plot.bar(x='month_year', ax=ax2, stacked=True, alpha=0.75)
 ax2.legend(bbox_to_anchor=(0., 1.02, 1., .102), loc='lower left',
            ncol=5, mode="expand", borderaxespad=0. )  #  ncol=3, fancybox=True, shadow=True
 ax2.set_xlabel('Rental Income over last year by month', fontsize='large', fontweight='bold')
@@ -178,21 +167,24 @@ ax2.set_xlabel('Rental Income over last year by month', fontsize='large', fontwe
 
 # plot 3
 
-data_lastYr_exp.plot.bar(x='month_year', ax=ax3, stacked=True)
+data_lastYr_exp.plot.bar(x='month_year', ax=ax3, stacked=True, alpha=0.75)
 ax3.legend(bbox_to_anchor=(0., 1.02, 1., .102), loc='lower left',
            ncol=4, mode="expand", borderaxespad=0. )
 ax3.set_xlabel('Expenditure categories over last year', fontsize='large', fontweight='bold')
 
 grid2.tight_layout(fig2)
+
+
 # plot 4
 
-data_lastYr_inc_grp.plot.bar(x='month_year', ax=ax4, stacked=False)
+data_lastYr_inc_grp.plot.bar(x='month_year', ax=ax4, stacked=True, aplha=0.75)
 ax4.legend(bbox_to_anchor=(0., 1.02, 1., .102), loc='lower left',
            ncol=2, mode="expand", borderaxespad=0. )
 ax4.set_xlabel('Income from Members v all Renters over last year', fontsize='large', fontweight='bold')
 
+
 # plot 5
-data_lastYr_rentee_v_fitzCAF.plot.bar(x='month_year', ax=ax5, stacked=False)
+data_lastYr_rentee_v_fitzCAF.plot.bar(x='month_year', ax=ax5, stacked=True, aplha=0.75)
 ax5.legend(bbox_to_anchor=(0., 1.02, 1., .102), loc='lower left',
            ncol=5, mode="expand", borderaxespad=0. )
 ax5.set_xlabel('Income from FitzCAF v Renters over last year', fontsize='large', fontweight='bold')
