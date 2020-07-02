@@ -133,11 +133,15 @@ grid2 = gridspec.GridSpec(nrows=2, ncols=1, figure=fig2)
 fig3 = plt.figure(figsize = (18,12))
 grid3 = gridspec.GridSpec(nrows=2, ncols=1, figure=fig3)
 
+fig4 = plt.figure(figsize = (18,12))
+grid4 = gridspec.GridSpec(nrows=2, ncols=1, figure=fig4)
+
 ax1 = fig1.add_subplot(grid1[0, 0])
 ax2 = fig2.add_subplot(grid2[0, 0])
 ax3 = fig2.add_subplot(grid2[1, 0])
 ax4 = fig3.add_subplot(grid3[0, 0])
 ax5 = fig3.add_subplot(grid3[1, 0])
+ax6 = fig4.add_subplot(grid4[0, 0])
 
 ax11 = fig1.add_subplot(grid1[1, 0])
 
@@ -191,7 +195,16 @@ ax5.legend(bbox_to_anchor=(0., 1.02, 1., .102), loc='lower left',
            ncol=5, mode="expand", borderaxespad=0. )
 ax5.set_xlabel('Income from FitzCAF v Renters over last year', fontsize='large', fontweight='bold')
 
-grid3.tight_layout(fig3)
+grid3.tight_layout(fig2)
+
+#plot 6
+
+#  data.plot.bar(x='month_year', y='Balance', ax=ax6, alpha=0.75)
+#  ax6.legend(bbox_to_anchor=(0., 1.02, 1., .102), loc='lower left',
+#             ncol=5, mode="expand", borderaxespad=0. )  #  ncol=3, fancybox=True, shadow=True
+# ax6.set_xlabel('balance', fontsize='large', fontweight='bold')
+
+#  grid4.tight_layout(fig2)
 
 #  plt.tight_layout()
 plt.show()
