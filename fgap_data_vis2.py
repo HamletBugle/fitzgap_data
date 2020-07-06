@@ -136,6 +136,13 @@ data_lastYr_inc = data_lastYr[(data_lastYr.Category== 'Members fees') | (data_la
 data_lastYr_inc_grp = data_lastYr_inc.groupby(['month_year','Category'])['Money in'].sum().unstack()
 data_lastYr_inc_grp.reset_index(inplace=True)
 
+data_lastYr_inc_pie = data_lastYr.groupby(['Category','Subcat'])['Money in'].sum().unstack
+
+
+#    *******************
+#    SET UP FIGURES
+#    *******************
+
 fig1 = plt.figure(figsize = (18,12))
 grid1 = gridspec.GridSpec(nrows=3, ncols=1, figure=fig1)  #(nrows=3, ncols=2, figure=fig1)
 
@@ -148,15 +155,30 @@ grid3 = gridspec.GridSpec(nrows=2, ncols=1, figure=fig3)
 fig4 = plt.figure(figsize = (18,12))
 grid4 = gridspec.GridSpec(nrows=2, ncols=1, figure=fig4)
 
-ax1 = fig1.add_subplot(grid1[0, 0])
-ax2 = fig2.add_subplot(grid2[0, 0])
-ax3 = fig2.add_subplot(grid2[1, 0])
-ax4 = fig3.add_subplot(grid3[0, 0])
-ax5 = fig3.add_subplot(grid3[1, 0])
-ax6 = fig4.add_subplot(grid4[0, 0])
+fig5 = plt.figure(figsize = (18,12))
+grid5 = gridspec.GridSpec(nrows=2, ncols=2, figure=fig5)
 
+#    *******************
+#    SET UP AXES
+#    *******************
+
+ax1 = fig1.add_subplot(grid1[0, 0])
 ax11 = fig1.add_subplot(grid1[1, 0])
 ax12 = fig1.add_subplot(grid1[2, 0])
+
+ax2 = fig2.add_subplot(grid2[0, 0])
+ax3 = fig2.add_subplot(grid2[1, 0])
+
+ax4 = fig3.add_subplot(grid3[0, 0])
+ax5 = fig3.add_subplot(grid3[1, 0])
+
+ax6 = fig4.add_subplot(grid4[0, 0])
+
+ax7 = fig5.add_subplot(grid5[0,0])
+
+#    *******************
+#    SET UP TITLES
+#    *******************
 
 ax1.set_title('Income / Expenditure (Surplus) by year and month')
 ax11.set_title('Income from room rental by year and month')
@@ -180,14 +202,12 @@ fig1.savefig(my_path + 'FitzGAP_Inc_Exp' + '.png')
 
 
 #plot 2
-
 data_lastYr_rent.plot.bar(x='month_year', ax=ax2, stacked=True, alpha=0.75)
 ax2.legend(bbox_to_anchor=(0., 1.02, 1., .102), loc='lower left',
            ncol=5, mode="expand", borderaxespad=0. )  #  ncol=3, fancybox=True, shadow=True
 ax2.set_title("Rental Income over last " + str(nYears) + " years", x=0.5, y=0.9)
 
 # plot 3
-
 data_lastYr_exp.plot.bar(x='month_year', ax=ax3, stacked=True, alpha=0.75)
 ax3.legend(bbox_to_anchor=(0., 1.02, 1., .102), loc='lower left',
            ncol=4, mode="expand", borderaxespad=0. )
@@ -197,7 +217,6 @@ grid2.tight_layout(fig2)
 fig2.savefig(my_path + 'FitzGAP_Last_Year' + '.png')
 
 # plot 4
-
 data_lastYr_inc_grp.plot.bar(x='month_year', ax=ax4, stacked=True)
 ax4.legend(bbox_to_anchor=(0., 1.02, 1., .102), loc='lower left',
            ncol=2, mode="expand", borderaxespad=0. )
@@ -213,14 +232,17 @@ ax5.set_title("Income from FitzCAF v Renters over last " + str(nYears) + " years
 grid3.tight_layout(fig3)
 fig3.savefig(my_path + 'FitzGAP_Renters' + '.png')
 
-#plot 12
-
+#plot 6
 data_balance.plot.bar(x='month_year', y='Balance', ax=ax6, alpha=0.75)
 ax6.legend()  #  ncol=3, fancybox=True, shadow=True
 ax6.set_title("Cash Balance", x=0.5, y=0.9)
 
 grid4.tight_layout(fig4)
 fig4.savefig(my_path + 'FitzGAP_Balance' + '.png')
+
+#plot 7
+#  data_lastYr_inc_pie.plot.pie('Money in', ax=ax7)
+#  ax7.axis('equal')  # equal aspect ensures circle
 
 #  plt.tight_layout()
 plt.show()
