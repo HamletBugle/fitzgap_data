@@ -136,7 +136,7 @@ data_lastYr_inc = data_lastYr[(data_lastYr.Category== 'Members fees') | (data_la
 data_lastYr_inc_grp = data_lastYr_inc.groupby(['month_year','Category'])['Money in'].sum().unstack()
 data_lastYr_inc_grp.reset_index(inplace=True)
 
-data_lastYr_inc_pie = data_lastYr.groupby(['Category','Subcat'])['Money in'].sum().unstack
+
 
 
 #    *******************
@@ -241,8 +241,20 @@ grid4.tight_layout(fig4)
 fig4.savefig(my_path + 'FitzGAP_Balance' + '.png')
 
 #plot 7
-#  data_lastYr_inc_pie.plot.pie('Money in', ax=ax7)
-#  ax7.axis('equal')  # equal aspect ensures circle
+print(data_lastYr_inc.head())
+data_forPie_cat = data_lastYr.groupby('Category')['Money in'].sum()
+data_forPie_subcat = data_lastYr.groupby('Subcat')['Money in'].sum()
+print(data_forPie_cat.head(15))
+data_forPie_cat.sort_values(inplace=True, ascending=True)
+data_forPie_subcat.sort_values(inplace=True, ascending=True)
+print(data_forPie_subcat.head(15))
+cmap = plt.get_cmap('tab20')
+outer_colors = cmap(np.array([1,2,3,4,5,6,7,8,9,10]))
+data_forPie_cat.plot(kind='pie', y='Money in', ax=ax7, radius=1, colors=outer_colors, wedgeprops=dict(width=0.3, edgecolor='w'))
+data_forPie_subcat.plot(kind='pie', y='Money in', ax=ax7, radius=0.7, colors=outer_colors, wedgeprops=dict(width=0.3, edgecolor='w'))
+
+ax7.axis('equal')  # equal aspect ensures circle
+
 
 #  plt.tight_layout()
 plt.show()
