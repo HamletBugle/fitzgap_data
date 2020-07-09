@@ -131,6 +131,7 @@ data_0 = data.loc['2020'].groupby('Month')['Money in'].sum()
 data.reset_index(inplace=True)
 
 data_rentee_v_fitzCAF = data[(data['Subcat']=='Renter') | (data['Subcat']=='FitzCAF') | (data['Subcat']=='Member')]
+data_rentee_v_fitzCAF.replace({'Renter':'B: Renter', 'FitzCAF':'C: FitzCAF', 'Member':'A: Member'}, inplace=True)
 data_rentee_v_fitzCAF = data_rentee_v_fitzCAF.groupby(['month_year','Subcat'])['Money in'].sum().unstack()
 data_rentee_v_fitzCAF.reset_index(inplace=True)
 
@@ -152,6 +153,7 @@ data_lastYr_rent = data_lastYr.groupby(['month_year','Rentee'])['Money in'].sum(
 data_lastYr_rent.reset_index(inplace=True)
 
 data_lastYr_rentee_v_fitzCAF = data_lastYr[(data_lastYr['Subcat']=='Renter') | (data_lastYr['Subcat']=='FitzCAF') | (data_lastYr['Subcat']=='Member')]
+data_lastYr_rentee_v_fitzCAF.replace({'Renter':'B: Renter', 'FitzCAF':'C: FitzCAF', 'Member':'A: Member'}, inplace=True)
 data_lastYr_rentee_v_fitzCAF = data_lastYr_rentee_v_fitzCAF.groupby(['month_year','Subcat'])['Money in'].sum().unstack()
 data_lastYr_rentee_v_fitzCAF.reset_index(inplace=True)
 
@@ -247,10 +249,10 @@ grid2.tight_layout(fig2)
 fig2.savefig(my_path + 'FitzGAP_Last_Year' + '.png')
 
 # plot 4
-data_lastYr_inc_grp.plot.bar(x='month_year', ax=ax4, stacked=True)
-ax4.legend(bbox_to_anchor=(0., 1.02, 1., .102), loc='lower left',
-           ncol=2, mode="expand", borderaxespad=0. )
-ax4.set_title("Income from Members v all Renters over last " + str(nYears) + " years", x=0.5, y=0.9)
+#  data_lastYr_inc_grp.plot.bar(x='month_year', ax=ax4, stacked=True)
+#  ax4.legend(bbox_to_anchor=(0., 1.02, 1., .102), loc='lower left',
+#             ncol=2, mode="expand", borderaxespad=0. )
+#  ax4.set_title("Income from Members v all Renters over last " + str(nYears) + " years", x=0.5, y=0.9)
 
 # plot 5
 plt.rc('axes', prop_cycle=(cycler('color', ['r', 'g', 'b'])))
