@@ -148,7 +148,8 @@ data_lastYr = data[data['Date'] > dt]
 
 
 
-data_lastYr.to_csv(my_path+'saved_data.csv')  # Save to csv
+data_lastYr.to_csv(my_path+'data_lastYr.csv')  # Save to csv
+data.to_csv(my_path+'data.csv')
 
 data_lastYr.set_index('month_year', inplace=True)
 data_lastYr_rent = data_lastYr.groupby(['month_year','Rentee'])['Money in'].sum().unstack()
@@ -216,20 +217,22 @@ ax7 = fig5.add_subplot(grid5[0,0])
 #    *******************
 
 ax1.set_title('Income / Expenditure (Surplus) by year and month')
-ax11.set_title('Income from room rental by year and month')
+ax11.set_title('Income by type and year/month against expenses')
 ax12.set_title('Cash Balance by year and month')
 
 
 # plot 1
 data_inc.plot.bar(x='month_year',ax=ax1, color='blue', alpha=0.25, label='Income')
-data_exp.plot.bar(x='month_year',ax=ax1, color='r', alpha=0.25, label='Expenditure')
+data_exp.plot.bar(x='month_year',ax=ax1,  color='r', alpha=0.25, label='Expenditure')
 color = data_surplus['color'].to_numpy()
 data_surplus.plot.bar(x='month_year',y='Surplus', ax=ax1, color=color, label='Surplus')
 ax1.legend()
-data_MoneyOut.plot.bar(x='month_year', ax=ax11, color='red', alpha=0.8)  #  expenses
-data_rentee_v_fitzCAF.plot.bar(x='month_year', ax=ax11, alpha=0.9, stacked=True)
 
+data_MoneyOut.plot.bar(x='month_year', ax=ax11, width= 1, color='red', alpha=0.25)  #  expenses
+data_rentee_v_fitzCAF.plot.bar(x='month_year', ax=ax11, alpha=1, stacked=True)
+ax11.legend()
 ax11.set_ylim([0, 10000])
+
 data_balance.plot.bar(x='month_year', y='Balance', ax=ax12, color='green', alpha=0.75)
 ax12.legend()  #  ncol=3, fancybox=True, shadow=True
 
