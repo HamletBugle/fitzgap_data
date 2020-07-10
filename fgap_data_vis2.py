@@ -25,8 +25,8 @@ def rentee(descrip_cntns, name):
     data.loc[data['Description'].str.contains(descrip_cntns), 'Rentee'] = name   
 
 def changeMembers():
-    members_list = np.array([['NITSUN','MN'],['PWGAP','PW'],['MS SCOTT','SS'],['D WOOD','DW'],
-                             ['S TUCKER','ST'],['JH PSYCHOTHERAPY','JH']])
+    members_list = np.array([['NITSUN','MN'],['PWGAP','PW'],['MS SCOTT','SS'],['MS S SCOTT','SS'],['D WOOD','DW'],
+                             ['S TUCKER','ST'],['JH PSYCHOTHERAPY','JH'],['ROBERTA GREEN','RG']])
     for member, name in members_list:
         ctgry = 'Members Fees'
         subctgry = 'Member'
@@ -118,6 +118,7 @@ data_surplus.to_csv(my_path + 'data_surplus.csv')
 
 data_inc = data.groupby('month_year')['Money in'].sum()
 data_exp = data.groupby('month_year')['Outflow'].sum()
+data_MoneyOut = data.groupby('month_year')['Money Out'].sum()
 data_balance = data.groupby('month_year')['Balance'].mean()
 
 data.reset_index(inplace=True)
@@ -134,6 +135,7 @@ data_rentee_v_fitzCAF = data[(data['Subcat']=='Renter') | (data['Subcat']=='Fitz
 data_rentee_v_fitzCAF.replace({'Renter':'B: Renter', 'FitzCAF':'C: FitzCAF', 'Member':'A: Member'}, inplace=True)
 data_rentee_v_fitzCAF = data_rentee_v_fitzCAF.groupby(['month_year','Subcat'])['Money in'].sum().unstack()
 data_rentee_v_fitzCAF.reset_index(inplace=True)
+
 
 data_year_grp = data.groupby(['Month','Year'])['Money in'].sum().unstack()
 
@@ -155,6 +157,7 @@ data_lastYr_rent.reset_index(inplace=True)
 data_lastYr_rentee_v_fitzCAF = data_lastYr[(data_lastYr['Subcat']=='Renter') | (data_lastYr['Subcat']=='FitzCAF') | (data_lastYr['Subcat']=='Member')]
 data_lastYr_rentee_v_fitzCAF.replace({'Renter':'B: Renter', 'FitzCAF':'C: FitzCAF', 'Member':'A: Member'}, inplace=True)
 data_lastYr_rentee_v_fitzCAF = data_lastYr_rentee_v_fitzCAF.groupby(['month_year','Subcat'])['Money in'].sum().unstack()
+
 data_lastYr_rentee_v_fitzCAF.reset_index(inplace=True)
 
 data_lastYr_exp = data_lastYr.groupby(['month_year','Category'])['Money Out'].sum().unstack()
@@ -223,7 +226,9 @@ data_exp.plot.bar(x='month_year',ax=ax1, color='r', alpha=0.25, label='Expenditu
 color = data_surplus['color'].to_numpy()
 data_surplus.plot.bar(x='month_year',y='Surplus', ax=ax1, color=color, label='Surplus')
 ax1.legend()
-data_rentee_v_fitzCAF.plot.bar(x='month_year', ax=ax11, stacked=True)
+data_MoneyOut.plot.bar(x='month_year', ax=ax11, color='red', alpha=0.8)  #  expenses
+data_rentee_v_fitzCAF.plot.bar(x='month_year', ax=ax11, alpha=0.9, stacked=True)
+
 ax11.set_ylim([0, 10000])
 data_balance.plot.bar(x='month_year', y='Balance', ax=ax12, color='green', alpha=0.75)
 ax12.legend()  #  ncol=3, fancybox=True, shadow=True
@@ -257,6 +262,7 @@ fig2.savefig(my_path + 'FitzGAP_Last_Year' + '.png')
 # plot 5
 plt.rc('axes', prop_cycle=(cycler('color', ['r', 'g', 'b'])))
 data_lastYr_rentee_v_fitzCAF.plot.bar(x='month_year', ax=ax5, stacked=True)
+
 ax5.legend(bbox_to_anchor=(0., 1.02, 1., .102), loc='lower left',
            ncol=5, mode="expand", borderaxespad=0. )
 ax5.set_title("Income from FitzCAF v Renters over last " + str(nYears) + " years", x=0.5, y=0.9)
