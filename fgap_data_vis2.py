@@ -257,6 +257,7 @@ grid2.tight_layout(fig2)
 fig2.savefig(my_path + 'FitzGAP_Last_Year' + '.png')
 
 # plot 4
+
 #  data_lastYr_inc_grp.plot.bar(x='month_year', ax=ax4, stacked=True)
 #  ax4.legend(bbox_to_anchor=(0., 1.02, 1., .102), loc='lower left',
 #             ncol=2, mode="expand", borderaxespad=0. )
