@@ -25,6 +25,9 @@ def rentee(descrip_cntns, name):
     data.loc[data['Description'].str.contains(descrip_cntns), 'Rentee'] = name   
 
 def changeMembers():
+    '''
+    Adds "Members Fees" to category and "Menber" to Subcategory for members
+    '''
     members_list = np.array([['NITSUN','MN'],['PWGAP','PW'],['MS SCOTT','SS'],['MS S SCOTT','SS'],['D WOOD','DW'],
                              ['S TUCKER','ST'],['JH PSYCHOTHERAPY','JH'],['ROBERTA GREEN','RG']])
     for member, name in members_list:
@@ -34,16 +37,30 @@ def changeMembers():
         subcategorise(member, subctgry)
         rentee(member,name)         
 
+def changeRenters():
+    '''
+    Adds "Renter" to  Subcategory for Renters
+    '''
+    renters_list = np.array([['NITSUN','MN'],['PWGAP','PW'],['MS SCOTT','SS'],['MS S SCOTT','SS'],['D WOOD','DW'],
+                             ['S TUCKER','ST'],['JH PSYCHOTHERAPY','JH'],['ROBERTA GREEN','RG']])
+    for member, name in renters_list:
+        #  ctgry = 'Members Fees'
+        subctgry = 'Renter'
+        #  categorise(member,ctgry)
+        subcategorise(member, subctgry)
+        rentee(member,name)                 
+
 my_path = '/Users/david/Dropbox/Computing/Linux/Python/fitzgap_data/'
 
 #  data_file = 'fgap_data_financials.csv'
-data_file = 'fitzGAP_Statements.csv'
+#  data_file = 'fitzGAP_Statements.csv'
+data_file = 'dw_santander_converted_for_data.csv'
 data = pd.read_csv(my_path + data_file)
 data.columns = ['Date','Month','Year','Fiscal year end','Description',
-            'Category','Money in','Money Out','Balance','Month Name','Rentee','Subcat','blank1','blank2','Surplus']  # Converts Column headers to consistent labels
+            'Category','Money in','Money Out','Balance','Month Name','Rentee','Subcat']  # Converts Column headers to consistent labels - cut out: ,'blank1','blank2','Surplus'
 
 data = data[data['Date'].notna()]  # Drop rows without Date   
-data = data.drop(['blank1','blank2'], axis=1)        
+#  data = data.drop(['blank1','blank2'], axis=1)        
 
 data['Date'] = pd.to_datetime(data['Date'], dayfirst=True, yearfirst=False)
 data['month_year'] = pd.to_datetime(data['Date']).dt.to_period('M')
