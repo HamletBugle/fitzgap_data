@@ -84,3 +84,4 @@ print(data.tail())
 ###data.to_csv(myPath + 'dw_santander_converted_for_data.csv')
 data.to_csv(myPath + 'dw_santander_converted_for_data.csv')
 
+print("All done - apparently successful!!!")

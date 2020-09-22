@@ -190,31 +190,33 @@ data_lastYr_inc_grp.reset_index(inplace=True)
 #  data_lastYr_ren_CAF_mem.reset_index(inplace=True)
 
 
-
+print("Setting up figures...", end=" ")
 
 #    *******************
 #    SET UP FIGURES
 #    *******************
 
-fig1 = plt.figure(figsize = (18,12))
+fig1 = plt.figure(figsize = (20,10))
 grid1 = gridspec.GridSpec(nrows=3, ncols=1, figure=fig1)  #(nrows=3, ncols=2, figure=fig1)
 
-fig2 = plt.figure(figsize = (18,12))
+fig2 = plt.figure(figsize = (20,10))
 grid2 = gridspec.GridSpec(nrows=2, ncols=1, figure=fig2)
 
-fig3 = plt.figure(figsize = (18,12))
+fig3 = plt.figure(figsize = (20,10))
 grid3 = gridspec.GridSpec(nrows=2, ncols=1, figure=fig3)
 
-fig4 = plt.figure(figsize = (18,12))
+fig4 = plt.figure(figsize = (20,10))
 grid4 = gridspec.GridSpec(nrows=2, ncols=1, figure=fig4)
 
-fig5 = plt.figure(figsize = (18,12))
+fig5 = plt.figure(figsize = (20,10))
 grid5 = gridspec.GridSpec(nrows=2, ncols=2, figure=fig5)
+
+print("   OK")
 
 #    *******************
 #    SET UP AXES
 #    *******************
-
+print("Setting up axes...", end=" ")
 ax1 = fig1.add_subplot(grid1[0, 0])
 ax11 = fig1.add_subplot(grid1[1, 0])
 ax12 = fig1.add_subplot(grid1[2, 0])
@@ -228,16 +230,17 @@ ax5 = fig3.add_subplot(grid3[1, 0])
 ax6 = fig4.add_subplot(grid4[0, 0])
 
 ax7 = fig5.add_subplot(grid5[0,0])
-
+print("   OK")
 #    *******************
 #    SET UP TITLES
 #    *******************
-
+print("Setting up titles...", end=" ")
 ax1.set_title('Income / Expenditure (Surplus) by year and month')
 ax11.set_title('Income by type and year/month against expenses')
 ax12.set_title('Cash Balance by year and month')
 
-
+print("   OK")
+print("Plotting figure 1...", end=" ")
 # plot 1
 data_inc.plot.bar(x='month_year',ax=ax1, color='blue', alpha=0.25, label='Income')
 data_exp.plot.bar(x='month_year',ax=ax1,  color='r', alpha=0.25, label='Expenditure')
@@ -257,13 +260,15 @@ ax12.legend()  #  ncol=3, fancybox=True, shadow=True
 grid1.tight_layout(fig1)
 fig1.savefig(my_path + 'FitzGAP_Inc_Exp' + '.png')
 
-
+print("   OK")
+print("Plotting figure 2...", end=" ")
 #plot 2
 data_lastYr_rent.plot.bar(x='month_year', ax=ax2, stacked=True, alpha=0.75)
 ax2.legend(bbox_to_anchor=(0., 1.02, 1., .102), loc='lower left',
            ncol=5, mode="expand", borderaxespad=0. )  #  ncol=3, fancybox=True, shadow=True
 ax2.set_title("Rental Income over last " + str(nYears) + " years", x=0.5, y=0.9)
-
+print("   OK")
+print("Plotting figure 3...", end=" ")
 # plot 3
 data_lastYr_exp.plot.bar(x='month_year', ax=ax3, stacked=True, alpha=0.75)
 ax3.legend(bbox_to_anchor=(0., 1.02, 1., .102), loc='lower left',
@@ -272,7 +277,7 @@ ax3.set_title("Expenditure categories over last " + str(nYears) + " years", x=0.
 
 grid2.tight_layout(fig2)
 fig2.savefig(my_path + 'FitzGAP_Last_Year' + '.png')
-
+print("   OK")
 # plot 4
 
 #  data_lastYr_inc_grp.plot.bar(x='month_year', ax=ax4, stacked=True)
@@ -281,6 +286,7 @@ fig2.savefig(my_path + 'FitzGAP_Last_Year' + '.png')
 #  ax4.set_title("Income from Members v all Renters over last " + str(nYears) + " years", x=0.5, y=0.9)
 
 # plot 5
+print("Plotting figure 5...", end=" ")
 plt.rc('axes', prop_cycle=(cycler('color', ['r', 'g', 'b'])))
 data_lastYr_rentee_v_fitzCAF.plot.bar(x='month_year', ax=ax5, stacked=True)
 
@@ -290,23 +296,25 @@ ax5.set_title("Income from FitzCAF v Renters over last " + str(nYears) + " years
 
 grid3.tight_layout(fig3)
 fig3.savefig(my_path + 'FitzGAP_Renters' + '.png')
-
+print("   OK")
 #plot 6
+print("Plotting figure 6...", end=" ")
 data_balance.plot.bar(x='month_year', y='Balance', ax=ax6, alpha=0.75)
 ax6.legend()  #  ncol=3, fancybox=True, shadow=True
 ax6.set_title("Cash Balance", x=0.5, y=0.9)
 
 grid4.tight_layout(fig4)
 fig4.savefig(my_path + 'FitzGAP_Balance' + '.png')
-
+print("   OK")
 #plot 7
-print(data_lastYr_inc.head())
+print("Plotting figure 7...", end=" ")
+#print(data_lastYr_inc.head())
 data_forPie_cat = data_lastYr.groupby('Category')['Money in'].sum()
 data_forPie_subcat = data_lastYr.groupby('Subcat')['Money in'].sum()
-print(data_forPie_cat.head(15))
+#print(data_forPie_cat.head(15))
 data_forPie_cat.sort_values(inplace=True, ascending=True)
 data_forPie_subcat.sort_values(inplace=True, ascending=True)
-print(data_forPie_subcat.head(15))
+#print(data_forPie_subcat.head(15))
 cmap = plt.get_cmap('tab20')
 outer_colors = cmap(np.array([1,2,3,4,5,6,7,8,9,10]))
 data_forPie_cat.plot(kind='pie', y='Money in', ax=ax7, radius=1, colors=outer_colors, wedgeprops=dict(width=0.3, edgecolor='w'))
@@ -314,6 +322,7 @@ data_forPie_subcat.plot(kind='pie', y='Money in', ax=ax7, radius=0.7, colors=out
 
 ax7.axis('equal')  # equal aspect ensures circle
 
-
+print("   OK")
+print("Finishing up...")
 #  plt.tight_layout()
 plt.show()
