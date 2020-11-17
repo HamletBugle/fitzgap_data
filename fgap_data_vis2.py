@@ -203,7 +203,7 @@ fig2 = plt.figure(figsize = (20,10))
 grid2 = gridspec.GridSpec(nrows=2, ncols=1, figure=fig2)
 
 fig3 = plt.figure(figsize = (20,10))
-grid3 = gridspec.GridSpec(nrows=2, ncols=1, figure=fig3)
+grid3 = gridspec.GridSpec(nrows=1, ncols=1, figure=fig3)
 
 fig4 = plt.figure(figsize = (20,10))
 grid4 = gridspec.GridSpec(nrows=2, ncols=1, figure=fig4)
@@ -224,8 +224,8 @@ ax12 = fig1.add_subplot(grid1[2, 0])
 ax2 = fig2.add_subplot(grid2[0, 0])
 ax3 = fig2.add_subplot(grid2[1, 0])
 
-ax4 = fig3.add_subplot(grid3[0, 0])
-ax5 = fig3.add_subplot(grid3[1, 0])
+#  ax4 = fig3.add_subplot(grid3[0, 0])
+ax5 = fig3.add_subplot(grid3[0, 0])
 
 ax6 = fig4.add_subplot(grid4[0, 0])
 
