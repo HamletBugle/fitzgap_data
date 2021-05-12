@@ -49,12 +49,13 @@ my_exclusions = [
     "sarah1.tucker@virgin.net",
     "lewisharper1@gmail.com",
     "ads@adstest637.bu",
+    "helentestwix@gmail.com",
 ]
 
 
 def read_csv_files():
 
-    data = pd.read_csv(my_file, header=0, names=my_columns)
+    data = pd.read_csv(my_path + my_file, header=0, names=my_columns)
 
     print(data.head(5))
 
@@ -92,6 +93,17 @@ def read_csv_files():
 
     calc_age(data)
 
+    data["initials"] = data["name"].apply(get_initials)
+
+    data["sex"] = ""
+
+    data.sex.loc[data["gender_identity"].str.contains("male|man", case=False)] = "M"
+    data.sex.loc[
+        data["gender_identity"].str.contains("female|woman|fmal", case=False)
+    ] = "F"
+
+    print(data.head(5))
+
     save_to_csv(data)
     # for myFile in filenames:  # moves files to archive
     #    shutil.move(myFile, myPath_rxiv)
@@ -112,6 +124,13 @@ def age(born):
 
     today = date.today()
     return today.year - born.year - ((today.month, today.day) < (born.month, born.day))
+
+
+def get_initials(name):
+    init = ""
+    for n in name.split():
+        init += n[0]
+    return init
 
 
 # MAIN
