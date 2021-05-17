@@ -3,6 +3,8 @@ import re
 from nltk.stem import WordNetLemmatizer, PorterStemmer, SnowballStemmer
 from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
+from nltk.util import ngrams
+from nltk.probability import FreqDist
 from wordcloud import WordCloud
 import matplotlib.pyplot as plt
 
@@ -41,7 +43,7 @@ def preprocess(raw_text):
 
     cleaned_words = []
     lemmatizer = (
-        PorterStemmer()
+        WordNetLemmatizer()  # PorterStemmer()
     )  # plug in here any other stemmer or lemmatiser you want to try out
 
     # remove stopwords
@@ -52,7 +54,7 @@ def preprocess(raw_text):
     # stemm or lemmatise words
     stemmed_words = []
     for word in cleaned_words:
-        word = lemmatizer.stem(
+        word = lemmatizer.lemmatize(  # word = lemmatizer.stem(
             word
         )  # dont forget to change stem to lemmatize if you are using a lemmatizer
         stemmed_words.append(word)
@@ -89,12 +91,13 @@ def plot_wordcloud(select_col, output_file):
     ).generate(all_words)
 
     # plot the WordCloud image
-    plt.figure(figsize=(5, 5), facecolor=None)
+    plt.figure(figsize=(10, 10), facecolor=None)
     plt.imshow(wordcloud)
     plt.axis("off")
     plt.tight_layout(pad=0)
     plt.savefig(my_path + "fgap_website_text_" + output_file + ".png")
     # plt.show()
+    plt.close()
 
 
 data["brief_outline_hope"] = data["brief_outline_hope"].astype(
@@ -108,11 +111,33 @@ plot_wordcloud(data["brief_outline_history"], "history")
 plot_wordcloud(data["gender_identity"], "gid")
 
 
-from nltk.util import ngrams
+data["prep1"] = data["brief_outline_hope"].apply(preprocess)
+data["prep2"] = data["brief_outline_history"].apply(preprocess)
 
-#  n_gram = 2
-#  n_gram_dic = dict(Counter(ngrams(all_words.split(), n_gram)))
-#
-#  for i in n_gram_dic:
-#      if n_gram_dic[i] >= 2:
-#          print(i, n_gram_dic[i])
+all_words = ""
+for arg in data["prep1"]:
+
+    tokens = arg.split()
+
+    all_words += " ".join(tokens) + " "
+
+for arg in data["prep2"]:
+
+    tokens = arg.split()
+
+    all_words += " ".join(tokens) + " "
+
+tokenized_word = word_tokenize(all_words)
+print(tokenized_word)
+
+fdist = FreqDist(tokenized_word)
+print(fdist)
+
+fdist.most_common(2)
+
+# Frequency Distribution Plot
+fig1 = plt.figure(figsize=(10, 10), facecolor=None)
+fdist.plot(30, cumulative=False)
+plt.show()
+fig1.savefig(my_path + "fgap_website_stats.png")
+plt.close()

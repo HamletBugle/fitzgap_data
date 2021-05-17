@@ -131,6 +131,7 @@ led
 lead
 leading
 life
+like
 live
 lived
 lift
@@ -170,6 +171,7 @@ ourselves
 out
 over
 own
+past
 people
 place
 practice
@@ -178,6 +180,7 @@ practicing
 presence
 present
 re
+recent
 recommend
 recommended
 recommending
@@ -186,6 +189,7 @@ resort
 resorted
 resorts
 return
+role
 run
 s
 same
@@ -262,6 +266,7 @@ will
 with
 won
 won't
+would
 wouldn
 wouldn't
 write
