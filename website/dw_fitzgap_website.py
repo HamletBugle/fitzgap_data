@@ -105,6 +105,7 @@ def read_csv_files():
     print(data.head(5))
 
     save_to_csv(data)
+    print("Data saved to csv")
     # for myFile in filenames:  # moves files to archive
     #    shutil.move(myFile, myPath_rxiv)
 

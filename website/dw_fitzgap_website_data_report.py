@@ -15,6 +15,9 @@ my_image1 = "fgap_website_text_history.png"
 my_image2 = "fgap_website_text_hope.png"
 my_image3 = "fgap_website_text_gid.png"
 my_image4 = "fgap_website_stats.png"
+my_image5 = "fgap_website_referrals_by_week.png"
+my_image6 = "fgap_website_age_hist.png"
+my_image7 = "fgap_website_referrals_by_sex.png"
 
 
 day = datetime.today().strftime("%d/%m/%y")
@@ -88,4 +91,36 @@ pdf.cell(
 
 pdf.image(my_path + my_image4, x=30, y=160, w=150, h=SIZE)
 
+pdf.add_page()
+
+# pdf.cell(
+#    0,
+#    25,
+#    "Gender identity; most common words   ",
+#    border=0,
+#    ln=1,
+#    align="L",
+#    fill=False,
+# )
+
+pdf.image(my_path + my_image5, x=30, y=30, w=150, h=SIZE)
+
+# pdf.cell(
+#     0,
+#     210,
+#     "Word frequency   ",
+#     border=0,
+#     ln=1,
+#     align="L",
+#     fill=False,
+# )
+
+pdf.image(my_path + my_image6, x=30, y=160, w=150, h=SIZE)
+
+pdf.add_page()
+
+pdf.image(my_path + my_image7, x=30, y=30, w=150, h=SIZE)
+
 pdf.output(my_path + "fgap_website_data_report.pdf", "F")
+
+print("All done")

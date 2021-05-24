@@ -1,0 +1,5 @@
+# Do all plots
+import dw_fitzgap_website
+import dw_fgap_website_data_analysis
+import dw_fgap_website_text_analysis
+import dw_fitzgap_website_data_report
